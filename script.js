@@ -1,6 +1,5 @@
 const { useState, useMemo, useEffect } = React;
 
-// ─── Product Data ──────────────────────────────────────────────────────────────
 const allProducts = [
   { id: 1,  name: "Wireless Headphones",  category: "electronics", price: 79,  rating: 4.5, image: "images/headphones.jpg",    description: "Noise-isolating over-ear headphones with 24-hour battery and fast charging." },
   { id: 2,  name: "Smart Watch",          category: "electronics", price: 149, rating: 4.8, image: "images/watch.jpg",          description: "Track steps, heart rate, sleep and notifications with a bright AMOLED display." },
@@ -30,7 +29,6 @@ const allProducts = [
 
 const DISCOUNT_CODES = { SAVE10: 10, SHOPX20: 20, WELCOME15: 15, FLAT50: 50 };
 
-// ─── Star Rating Display ───────────────────────────────────────────────────────
 function StarDisplay({ rating, size = "1rem" }) {
   return (
     <span style={{ color: "#f59e0b", fontSize: size }}>
@@ -39,7 +37,6 @@ function StarDisplay({ rating, size = "1rem" }) {
   );
 }
 
-// ─── Review Section Component ──────────────────────────────────────────────────
 function ReviewSection({ productId, reviews, onAddReview, onDeleteReview }) {
   const [userName, setUserName]   = useState("");
   const [comment, setComment]     = useState("");
@@ -49,7 +46,6 @@ function ReviewSection({ productId, reviews, onAddReview, onDeleteReview }) {
 
   const productReviews = reviews.filter(r => r.productId === productId);
 
-  // Average rating from user reviews (only if any exist)
   const avgRating = productReviews.length
     ? (productReviews.reduce((s, r) => s + r.rating, 0) / productReviews.length).toFixed(1)
     : null;
@@ -75,7 +71,6 @@ function ReviewSection({ productId, reviews, onAddReview, onDeleteReview }) {
 
   return (
     <div className="reviews-container">
-      {/* Summary bar */}
       <div className="review-summary">
         <h3>Customer Reviews <span className="review-count-badge">{productReviews.length}</span></h3>
         {avgRating && (
@@ -87,7 +82,6 @@ function ReviewSection({ productId, reviews, onAddReview, onDeleteReview }) {
         )}
       </div>
 
-      {/* Write a review */}
       <div className="review-form">
         <h4>✍️ Leave a Review</h4>
         <form onSubmit={handleSubmit}>
@@ -127,7 +121,6 @@ function ReviewSection({ productId, reviews, onAddReview, onDeleteReview }) {
         </form>
       </div>
 
-      {/* Reviews list */}
       <div className="reviews-list">
         {productReviews.length === 0 ? (
           <div className="no-reviews">
@@ -164,7 +157,6 @@ function ReviewSection({ productId, reviews, onAddReview, onDeleteReview }) {
   );
 }
 
-// ─── Main App Component ────────────────────────────────────────────────────────
 function App() {
   const [cart, setCart]                   = useState([]);
   const [category, setCategory]           = useState("all");
@@ -188,7 +180,6 @@ function App() {
     state: "Tamil Nadu", pin: "", payment: "Credit / Debit Card",
   });
 
-  // ── Reviews: persisted in localStorage ──────────────────────────────────────
   const [reviews, setReviews] = useState(() => {
     try {
       const saved = localStorage.getItem("shopx_reviews");
@@ -210,10 +201,8 @@ function App() {
     showToast("Review deleted.");
   };
 
-  // ── Review count helper for product cards ────────────────────────────────────
   const getReviewCount = (productId) => reviews.filter(r => r.productId === productId).length;
 
-  // ── Filtering & Sorting ──────────────────────────────────────────────────────
   const filteredProducts = useMemo(() => {
     let list = [...allProducts];
     if (category !== "all") list = list.filter(p => p.category === category);
@@ -231,7 +220,6 @@ function App() {
   const shipping    = subtotal === 0 ? 0 : subtotal >= 100 ? 0 : 9.99;
   const total       = subtotal - discountAmt + shipping;
 
-  // ── Budget tracker ───────────────────────────────────────────────────────────
   useEffect(() => {
     if (budget <= 0 || total === 0) { setBudgetMessage(""); setBudgetClass(""); return; }
     const percent = Math.min((total / budget) * 100, 100);
@@ -247,7 +235,6 @@ function App() {
     }
   }, [budget, total]);
 
-  // ── Helpers ──────────────────────────────────────────────────────────────────
   function showToast(msg) {
     setToast(msg);
     setTimeout(() => setToast(""), 2500);
@@ -298,10 +285,8 @@ function App() {
     setDiscountInput("");
   }
 
-  // ── Render ───────────────────────────────────────────────────────────────────
   return (
     <div>
-      {/* ── NAV ── */}
       <nav>
         <div className="logo">ShopX</div>
         <div className="nav-right">
@@ -312,13 +297,11 @@ function App() {
         </div>
       </nav>
 
-      {/* ── HERO ── */}
       <div className="hero">
         <h1>Shop <span>Smarter.</span><br />Live Better.</h1>
         <p>Curated products for the modern lifestyle</p>
       </div>
 
-      {/* ── MAIN GRID ── */}
       <div className="main">
         <aside className="sidebar">
           <div className="filter-group">
@@ -407,7 +390,6 @@ function App() {
         </section>
       </div>
 
-      {/* ── CART OVERLAY ── */}
       <div className={`cart-overlay ${cartOpen ? "open" : ""}`} onClick={() => setCartOpen(false)}></div>
 
       <div className={`cart-panel ${cartOpen ? "open" : ""}`}>
@@ -503,13 +485,11 @@ function App() {
         </div>
       </div>
 
-      {/* ── PRODUCT DETAIL MODAL (with reviews) ── */}
       {details && (
         <div className="modal-overlay open" onClick={() => setDetails(null)}>
           <div className="modal product-modal" onClick={(e) => e.stopPropagation()}>
             <button className="close-btn detail-close" onClick={() => setDetails(null)}>✕</button>
 
-            {/* Scrollable area wraps both product info and reviews */}
             <div className="detail-scroll-area">
               <div className="detail-layout">
                 <div className="detail-image-wrap">
@@ -529,7 +509,6 @@ function App() {
                 </div>
               </div>
 
-              {/* ── LIVE REVIEW SECTION ── */}
               <div className="reviews-divider"></div>
               <ReviewSection
                 productId={details.id}
@@ -542,7 +521,6 @@ function App() {
         </div>
       )}
 
-      {/* ── CHECKOUT MODAL ── */}
       {checkoutOpen && (
         <div className="modal-overlay open" onClick={() => setCheckoutOpen(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -598,7 +576,6 @@ function App() {
         </div>
       )}
 
-      {/* ── SUCCESS MODAL ── */}
       {successOpen && (
         <div className="modal-overlay open" onClick={() => setSuccessOpen(false)}>
           <div className="modal success-modal" onClick={(e) => e.stopPropagation()}>
@@ -613,7 +590,6 @@ function App() {
         </div>
       )}
 
-      {/* ── TOAST ── */}
       {toast && <div className="toast show">{toast}</div>}
 
       <footer>
