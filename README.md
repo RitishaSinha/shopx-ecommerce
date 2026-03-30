@@ -3,7 +3,7 @@
 A modern, fully responsive shopping interface where users can browse products, apply filters, add items to a cart, adjust quantities, apply discount codes, and proceed through a checkout flow, built with HTML, CSS, JAVASCRIPT & REACT(CDN).
 
 ## Live Demo
-<link>
+Live Site Link: https://ritishasinha.github.io/shopx-ecommerce
 
 ## Features Implemented
 
