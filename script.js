@@ -593,9 +593,9 @@ function App() {
       {toast && <div className="toast show">{toast}</div>}
 
       <footer>
-        &copy; 2025 ShopX — E-commerce Shopping Cart || Built with HTML, CSS, JAVASCRIPT &amp; React CDN <br></br>
+        ShopX — E-commerce Shopping Cart || Built with HTML, CSS, JAVASCRIPT &amp; React CDN <br></br>
         A shopping interface where users can browse products, apply filters, add items to a cart, adjust quantities, apply discount codes, and proceed through a checkout flow.
-        <br></br>Web Development Project Fall-Semester 2025
+        <br></br>Web Development Project Winter-Semester 2025-26
 
       </footer>
     </div>
